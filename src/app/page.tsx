@@ -90,8 +90,8 @@ export default async function HomePage() {
           />
           <FeatureCard
             icon={Target}
-            title="Kostenlos nutzbar"
-            description="Lauft lokal mit Ollama oder nutze die Claude API. Selbst hosten auf Raspberry Pi moglich."
+            title="KI-Tutor immer dabei"
+            description="Frag den KI-Tutor jederzeit wenn du etwas nicht verstehst. Er erklart dir Grammatik auf einfachem Deutsch."
           />
         </div>
       </section>
@@ -136,14 +136,12 @@ export default async function HomePage() {
       <footer className="container mx-auto px-4 py-8 border-t max-w-6xl">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            Sprachmuskel - Open Source Deutsch Lernen
+            Sprachmuskel - Aktiv Deutsch lernen
           </p>
           <div className="flex gap-4 text-sm text-muted-foreground">
-            <a href="https://github.com" className="hover:text-foreground">
-              GitHub
+            <a href="https://github.com/shiini2/sprachmuskel" className="hover:text-foreground" target="_blank" rel="noopener noreferrer">
+              Open Source auf GitHub
             </a>
-            <span>|</span>
-            <span>Gebaut mit Next.js, Supabase & Claude</span>
           </div>
         </div>
       </footer>

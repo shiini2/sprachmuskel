@@ -1,30 +1,51 @@
 # Sprachmuskel - German Learning App
 
-**Live Demo:** https://sprachmuskel.vercel.app
+**[Start learning now at sprachmuskel.vercel.app](https://sprachmuskel.vercel.app)**
 
-A web app designed to take you from A1.2 to B1 German by focusing on **active production** rather than passive recognition. Built with Next.js, Supabase, and AI.
+A web app designed to take you from A1.2 to B1 German by focusing on **active production** rather than passive recognition. No multiple choice - you write, you think, you learn.
 
 ## Features
 
-- **Active Learning**: No multiple choice - you must write and formulate German sentences
+- **Active Learning**: Write German sentences yourself - like in real conversations
 - **B1 Exam Focus**: All exercises aligned with Goethe B1 exam requirements
 - **Adaptive Difficulty**: Targets 60-75% success rate for optimal learning
-- **German-First Explanations**: Explanations in German first, English available if needed
-- **AI Tutor Chat**: Ask questions anytime, get corrections on your German
-- **Mini-Lessons**: Learn grammar before practicing with exercises
-- **No Repetition**: AI generates unique sentences every time
-- **Free Options**: Works with free Groq API or local Ollama
+- **AI Tutor**: Ask questions anytime, get grammar explanations in simple German
+- **German-First**: Explanations in German first, English available when needed
+- **Vocabulary Review**: Spaced repetition flashcards for effective memorization
+- **Progress Tracking**: See your B1 readiness score improve over time
+- **Free to Use**: No credit card required, no ads
 
-## Tech Stack
+## How It Works
+
+1. **Create an account** at [sprachmuskel.vercel.app](https://sprachmuskel.vercel.app)
+2. **Set your level** and exam date
+3. **Practice 15-20 minutes daily** with exercises that make you write German
+4. **Track your progress** toward B1 readiness
+
+## Exercise Types
+
+- **Reverse Translation**: See English, write German
+- **Fill the Gap**: Complete sentences with the correct word
+- **Grammar Snap**: Quick-fire grammar questions (timed)
+- **Sentence Construction**: Arrange words into correct sentences
+- **Error Correction**: Find and fix grammatical errors
+
+---
+
+## For Developers
+
+Want to run your own instance or contribute? Sprachmuskel is open source!
+
+### Tech Stack
 
 - **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Shadcn/UI
 - **Backend**: Supabase (PostgreSQL, Auth)
-- **AI**: Groq (free, recommended), Ollama (local), or Claude API
-- **Deployment**: Vercel (free tier available)
+- **AI**: Groq (free), Ollama (local), or Claude API
+- **Deployment**: Vercel
 
-## Quick Start
+### Self-Hosting
 
-### 1. Clone and Install
+#### 1. Clone and Install
 
 ```bash
 git clone https://github.com/shiini2/sprachmuskel.git
@@ -32,34 +53,24 @@ cd sprachmuskel
 npm install
 ```
 
-### 2. Set Up Supabase (Free Tier)
+#### 2. Set Up Supabase
 
-1. Create a free account at [supabase.com](https://supabase.com)
-2. Create a new project
-3. Go to **Settings > API** and copy your URL and anon key
-4. Run the database migrations (choose one method):
+1. Create a free project at [supabase.com](https://supabase.com)
+2. Get your URL and anon key from **Settings > API**
+3. Run migrations:
 
-**Option A: Using Supabase CLI (recommended)**
 ```bash
-# Install Supabase CLI
-npm install -g supabase
-
-# Login to Supabase
+# Option A: Using Supabase CLI
 npx supabase login
-
-# Link your project (get project ID from Supabase dashboard URL)
 npx supabase link --project-ref YOUR_PROJECT_ID
-
-# Push migrations
 npm run db:push
+
+# Option B: Manual - run these in Supabase SQL Editor:
+# - supabase/migrations/20240101000000_initial_schema.sql
+# - supabase/migrations/20240101000001_seed_grammar_topics.sql
 ```
 
-**Option B: Manual SQL**
-Go to **SQL Editor** in Supabase dashboard and run:
-- `supabase/migrations/20240101000000_initial_schema.sql`
-- `supabase/migrations/20240101000001_seed_grammar_topics.sql`
-
-### 3. Configure Environment
+#### 3. Configure Environment
 
 ```bash
 cp .env.example .env.local
@@ -68,155 +79,46 @@ cp .env.example .env.local
 Edit `.env.local`:
 
 ```env
-# Supabase (required)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # AI Provider - choose one: 'groq', 'ollama', or 'claude'
 AI_PROVIDER=groq
-
-# Option 1: Groq (FREE & fast - recommended)
 GROQ_API_KEY=your_groq_api_key
 GROQ_MODEL=llama-3.1-8b-instant
-
-# Option 2: Ollama (FREE - runs locally)
-# OLLAMA_BASE_URL=http://localhost:11434
-# OLLAMA_MODEL=llama3.2
-
-# Option 3: Claude API (paid)
-# ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
-### 4. Set Up AI Provider (Choose One)
-
-#### Option 1: Groq (Recommended - Free & Fast)
-
-1. Create a free account at [console.groq.com](https://console.groq.com)
-2. Go to **API Keys** and create a new key
-3. Set `AI_PROVIDER=groq` and `GROQ_API_KEY` in `.env.local`
-
-Groq offers free API access with generous rate limits - perfect for personal use.
-
-#### Option 2: Ollama (Free - Local)
-
-1. Install Ollama: https://ollama.ai
-2. Pull a model:
-   ```bash
-   ollama pull llama3.2
-   ```
-3. Set `AI_PROVIDER=ollama` in `.env.local`
-
-#### Option 3: Claude API (Paid)
-
-1. Get an API key from [console.anthropic.com](https://console.anthropic.com)
-2. Set `AI_PROVIDER=claude` and `ANTHROPIC_API_KEY` in `.env.local`
-
-### 5. Run Development Server
+#### 4. Run
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+### AI Provider Options
 
-## Deploy to Vercel (Free)
+| Provider | Cost | Setup |
+|----------|------|-------|
+| **Groq** (recommended) | Free | Get key at [console.groq.com](https://console.groq.com) |
+| **Ollama** | Free | Install from [ollama.ai](https://ollama.ai), run `ollama pull llama3.2` |
+| **Claude** | ~$0.01/exercise | Get key at [console.anthropic.com](https://console.anthropic.com) |
 
-1. Fork this repo on GitHub
-2. Go to [vercel.com](https://vercel.com) and sign in with GitHub
-3. Click **"New Project"**
-4. Import your forked `sprachmuskel` repository
-5. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `AI_PROVIDER` (set to `groq`)
-   - `GROQ_API_KEY`
-   - `GROQ_MODEL` (set to `llama-3.1-8b-instant`)
-6. Click **Deploy**
+### Raspberry Pi / Self-Hosting
 
-Your app will be live at `https://your-project.vercel.app`
+Works on Raspberry Pi 4/5:
 
-## Project Structure
-
-```
-sprachmuskel/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # Login, signup pages
-│   │   ├── (protected)/       # Dashboard, practice, settings
-│   │   └── api/               # API routes for AI
-│   ├── components/
-│   │   ├── ui/                # Shadcn components
-│   │   ├── exercises/         # Exercise components
-│   │   ├── tutor/             # AI tutor chat
-│   │   └── dashboard/         # Dashboard widgets
-│   ├── contexts/              # React contexts (tutor state)
-│   ├── lib/
-│   │   ├── supabase/          # Supabase client
-│   │   ├── ai/                # AI provider abstraction
-│   │   └── algorithms/        # Difficulty, readiness
-│   └── types/                 # TypeScript types
-├── supabase/
-│   ├── schema.sql             # Database schema
-│   ├── seed-grammar-topics.sql # B1 curriculum
-│   └── tutor-history-schema.sql # Tutor chat history
-└── .env.example               # Environment template
-```
-
-## Exercise Types
-
-1. **Reverse Translation**: English → German sentence
-2. **Fill the Gap**: Complete German sentence with missing word
-3. **Grammar Snap**: Quick-fire grammar questions (timed)
-4. **Sentence Construction**: Arrange words into correct sentence
-5. **Error Correction**: Find and fix grammatical errors
-
-## AI Tutor
-
-The AI tutor chat (bottom-right corner) helps you:
-- Ask questions about German grammar
-- Get corrections when you write German with errors
-- Learn how to phrase questions in German
-- Understand why your answer was wrong
-
-The tutor explains things in simple German (A2 level) with English available.
-
-## Adaptive Learning
-
-The app targets 60-75% success rate (the "Goldilocks zone"):
-- >80% correct → Difficulty increases
-- <50% correct → Difficulty decreases
-
-This keeps you challenged but not frustrated.
-
-## B1 Readiness Score
-
-Your readiness score is calculated based on:
-- A1 topics: 15% weight (should be solid)
-- A2 topics: 30% weight (important bridge)
-- B1 topics: 55% weight (exam focus)
-
-## Self-Hosting (Raspberry Pi)
-
-This app can run on a Raspberry Pi 4/5:
-
-1. Install Node.js 18+
-2. Install Ollama (ARM64 supported)
-3. Use a smaller model: `ollama pull gemma2:2b`
-4. Build and run:
-   ```bash
-   npm run build
-   npm start
-   ```
-
-For production, use PM2:
 ```bash
-npm install -g pm2
+# Use a smaller model
+ollama pull gemma2:2b
+
+# Build and run
+npm run build
+npm start
+
+# For production, use PM2
 pm2 start npm --name "sprachmuskel" -- start
-pm2 save
-pm2 startup
 ```
 
-## Contributing
+### Contributing
 
 Contributions welcome! Please open an issue first to discuss changes.
 
