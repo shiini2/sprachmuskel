@@ -135,7 +135,18 @@ ALTER TABLE daily_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE seen_sentences ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tutor_messages ENABLE ROW LEVEL SECURITY;
 
--- Policies
+-- Policies (drop first to make idempotent)
+DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
+DROP POLICY IF EXISTS "Users can manage own topic progress" ON user_topic_progress;
+DROP POLICY IF EXISTS "Users can manage own vocabulary" ON vocabulary;
+DROP POLICY IF EXISTS "Users can manage own exercise history" ON exercise_history;
+DROP POLICY IF EXISTS "Users can manage own daily sessions" ON daily_sessions;
+DROP POLICY IF EXISTS "Users can manage own seen sentences" ON seen_sentences;
+DROP POLICY IF EXISTS "Users can manage own tutor messages" ON tutor_messages;
+DROP POLICY IF EXISTS "Anyone can view grammar topics" ON grammar_topics;
+
 CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
