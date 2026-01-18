@@ -93,8 +93,8 @@ export default function PlacementPage() {
         return (levelOrder[a.level] || 0) - (levelOrder[b.level] || 0)
       })
 
-      // Generate 2-3 questions per topic for key topics
-      const keyTopics = sortedTopics.slice(0, Math.min(15, sortedTopics.length))
+      // Generate questions for key topics across all levels
+      const keyTopics = sortedTopics.slice(0, Math.min(20, sortedTopics.length))
 
       for (const topic of keyTopics) {
         const difficulty = topic.level === 'A1' ? 2 : topic.level === 'A2' ? 3 : 4
@@ -111,7 +111,7 @@ export default function PlacementPage() {
       setAvailableQuestions(questions)
       setQuizState({
         currentQuestion: 1,
-        totalQuestions: Math.min(20, questions.length), // Max 20 questions in placement
+        totalQuestions: Math.min(35, questions.length), // More questions for accurate placement
         answers: [],
         currentLevel: 'A1.1',
         startTime: Date.now(),
@@ -316,7 +316,7 @@ export default function PlacementPage() {
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Etwa 10-15 Minuten
+              Etwa 15-20 Minuten
             </p>
           </CardContent>
         </Card>

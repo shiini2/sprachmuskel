@@ -21,8 +21,8 @@ const GRAMMAR_TO_PROFILE_LEVEL: Record<string, Level> = {
 // Thresholds for level assessment
 const MASTERY_THRESHOLD = 0.75 // 75% correct to consider mastered
 const LEARNING_THRESHOLD = 0.50 // 50% correct to consider learning
-const MIN_QUESTIONS_PER_TOPIC = 2
-const MAX_QUESTIONS_PER_TOPIC = 5
+const MIN_QUESTIONS_PER_TOPIC = 3
+const MAX_QUESTIONS_PER_TOPIC = 6
 
 // Calculate mastery level based on success rate
 export function calculateMasteryLevel(correct: number, total: number): MasteryLevel {
@@ -51,9 +51,9 @@ export function shouldContinueTopic(
   if (total >= maxQuestions) return false
   if (total < MIN_QUESTIONS_PER_TOPIC) return true
 
-  // If clearly mastered or clearly not learned, we can stop early
+  // Only stop early if we have enough data and confidence is very high/low
   const rate = correct / total
-  if (total >= 3 && (rate >= 0.90 || rate <= 0.20)) return false
+  if (total >= 5 && (rate >= 0.95 || rate <= 0.15)) return false
 
   return true
 }
