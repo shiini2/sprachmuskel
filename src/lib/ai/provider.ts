@@ -97,7 +97,8 @@ class GroqProvider implements AIProvider {
 
   constructor() {
     this.apiKey = process.env.GROQ_API_KEY || ''
-    this.model = process.env.GROQ_MODEL || 'llama-3.1-8b-instant' // Fast & good quality
+    // Use llama-3.3-70b-versatile for better quality responses
+    this.model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
   }
 
   async generate(prompt: string): Promise<AIResponse> {
@@ -111,12 +112,16 @@ class GroqProvider implements AIProvider {
         model: this.model,
         messages: [
           {
+            role: 'system',
+            content: 'You are a helpful German language tutor. Always respond with valid JSON only, no markdown or extra text.',
+          },
+          {
             role: 'user',
             content: prompt,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 1024,
+        temperature: 0.5, // Lower for more consistent, focused responses
+        max_tokens: 1500,
       }),
     })
 

@@ -224,74 +224,58 @@ export function generateTutorResponsePrompt(params: {
 }): string {
   const { userQuestion, topic, currentQuestion, userAnswer, wasCorrect, conversationHistory } = params
 
-  const contextSection = topic ? `
-Current context:
-- Grammar topic: ${topic.name_de} (${topic.name_en})
-${currentQuestion ? `- Current question: ${currentQuestion}` : ''}
-${userAnswer ? `- User's answer: ${userAnswer}` : ''}
-${wasCorrect !== undefined ? `- Was correct: ${wasCorrect}` : ''}
+  // Build a focused context block
+  let contextBlock = ''
+  if (topic || currentQuestion || userAnswer !== undefined) {
+    contextBlock = `
+=== CURRENT EXERCISE CONTEXT ===
+${topic ? `Topic: ${topic.name_de} (${topic.name_en})` : ''}
+${topic?.description_de ? `What it is: ${topic.description_de}` : ''}
+${currentQuestion ? `The question was: "${currentQuestion}"` : ''}
+${userAnswer ? `Student answered: "${userAnswer}"` : ''}
+${wasCorrect !== undefined ? `Result: ${wasCorrect ? 'CORRECT' : 'INCORRECT'}` : ''}
+================================
+`
+  }
+
+  // Format conversation history clearly
+  const historyBlock = conversationHistory?.length ? `
+Recent conversation:
+${conversationHistory.slice(-6).map(h => `[${h.role.toUpperCase()}]: ${h.message}`).join('\n')}
 ` : ''
 
-  const historySection = conversationHistory?.length ? `
-Previous conversation:
-${conversationHistory.map(h => `${h.role === 'user' ? 'Student' : 'Tutor'}: ${h.message}`).join('\n')}
-` : ''
+  return `You are a helpful German tutor. A student is practicing German and needs your help.
 
-  return `You are an expert German tutor for BEGINNERS (A1-B1 level). Your PRIMARY mission is to explain German grammar CLEARLY and CORRECTLY.
+${contextBlock}
+${historyBlock}
 
-${contextSection}
-${historySection}
+STUDENT'S QUESTION: "${userQuestion}"
 
-Student's question: ${userQuestion}
+YOUR TASK:
+${currentQuestion && userAnswer !== undefined ? `
+The student just ${wasCorrect ? 'correctly answered' : 'got wrong'} an exercise. They are asking about it.
+- If they ask "why" or "warum": Explain the grammar rule that applies
+- If they got it wrong: Explain what the correct answer should be and why
+- Reference the SPECIFIC question and answer above in your explanation
+` : `
+Answer their question about German grammar clearly and simply.
+`}
 
-YOUR CORE PRINCIPLES:
+RULES:
+1. Be SPECIFIC to their question - don't give generic answers
+2. Use simple German (A2 level) in response_de
+3. Give 2-3 helpful examples that illustrate the point
+4. Keep it SHORT - max 3-4 sentences per language
+5. If they wrote in English, set correction_de to the German translation (so they learn)
 
-1. ACCURACY IS ESSENTIAL
-   - Every grammar explanation must be 100% correct
-   - Double-check your own German before responding
-   - Use correct cases, verb conjugations, word order in YOUR response
-   - If unsure about something, say so rather than give wrong information
-
-2. CLARITY FOR BEGINNERS
-   - Explain like you're teaching someone who knows nothing
-   - Break complex concepts into simple steps
-   - Use everyday vocabulary (A2 level)
-   - One concept at a time - don't overwhelm
-   - Avoid linguistic jargon unless you explain it
-
-3. PRACTICAL EXAMPLES
-   - Give 2-3 examples that clearly show the rule in action
-   - Use common, useful words the student will actually use
-   - Show the pattern clearly (e.g., "ich gehe, du gehst, er geht")
-   - Include translations so the meaning is clear
-
-4. CORRECT MISCONCEPTIONS
-   - If a rule has exceptions or nuances, mention the most important ones
-   - Don't oversimplify to the point of being wrong
-   - Example: German grammatical gender (der/die/das) must be memorized with each noun - it doesn't follow logical patterns
-
-5. HELP THE STUDENT ASK IN GERMAN
-   - If the question is in ENGLISH: translate it to German in correction_de, and set correction_en to "Auf Deutsch:" (so they learn how to ask in German)
-   - If the question is in GERMAN with errors: show the corrected version in correction_de, explain the error in correction_en
-   - If the question is in GERMAN and correct: set both correction fields to null
-   - This helps them learn to communicate in German
-
-RESPONSE FORMAT:
-- correction_de: German version of the question (translated if English, corrected if German with errors, null if German and correct)
-- correction_en: "Auf Deutsch:" if translated from English, error explanation if corrected, null if no changes needed
-- response_de: Your explanation in simple, correct German
-- response_en: The same explanation in English
-- examples: 2-3 clear examples with translations
-
-IMPORTANT: Respond ONLY with valid JSON, no other text.
+Respond with this JSON ONLY:
 {
-  "correction_de": null,
-  "correction_en": null,
-  "response_de": "Clear, accurate explanation in simple German",
-  "response_en": "Clear, accurate explanation in English",
+  "correction_de": ${userQuestion.match(/[a-zA-Z]/) && !userQuestion.match(/[äöüßÄÖÜ]/) ? '"Auf Deutsch: [translate their question]"' : 'null'},
+  "correction_en": ${userQuestion.match(/[a-zA-Z]/) && !userQuestion.match(/[äöüßÄÖÜ]/) ? '"Try asking in German!"' : 'null'},
+  "response_de": "Your answer in simple German",
+  "response_en": "Same answer in English",
   "examples": [
-    {"de": "Example sentence", "en": "Translation"},
-    {"de": "Another example", "en": "Translation"}
+    {"de": "Example sentence", "en": "Translation"}
   ]
 }`
 }
