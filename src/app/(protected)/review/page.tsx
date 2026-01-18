@@ -52,18 +52,20 @@ export default function ReviewPage() {
     if (!user) return
 
     // Get all vocabulary
-    const { data: allVocab } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: allVocab } = await (supabase as any)
       .from('vocabulary')
       .select('*')
       .eq('user_id', user.id)
       .order('next_review', { ascending: true })
 
     if (allVocab) {
-      setVocabulary(allVocab)
+      const typedVocab = allVocab as VocabularyItem[]
+      setVocabulary(typedVocab)
 
       // Filter due items (next_review <= now)
       const now = new Date().toISOString()
-      const due = allVocab.filter(v => v.next_review <= now)
+      const due = typedVocab.filter(v => v.next_review <= now)
       setDueItems(due)
     }
     setIsLoading(false)
@@ -109,7 +111,8 @@ export default function ReviewPage() {
     const next_review = new Date()
     next_review.setDate(next_review.getDate() + interval_days)
 
-    await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase as any)
       .from('vocabulary')
       .update({
         ease_factor,
@@ -141,7 +144,8 @@ export default function ReviewPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    await supabase.from('vocabulary').insert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase as any).from('vocabulary').insert({
       user_id: user.id,
       word_de: newWord.de,
       word_en: newWord.en,
