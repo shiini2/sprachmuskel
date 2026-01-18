@@ -35,10 +35,27 @@ npm install
 1. Create a free account at [supabase.com](https://supabase.com)
 2. Create a new project
 3. Go to **Settings > API** and copy your URL and anon key
-4. Go to **SQL Editor** and run these files in order:
-   - `supabase/schema.sql` - Creates the database tables
-   - `supabase/seed-grammar-topics.sql` - Adds the B1 curriculum
-   - `supabase/tutor-history-schema.sql` - Creates tutor chat history table
+4. Run the database migrations (choose one method):
+
+**Option A: Using Supabase CLI (recommended)**
+```bash
+# Install Supabase CLI
+npm install -g supabase
+
+# Login to Supabase
+npx supabase login
+
+# Link your project (get project ID from Supabase dashboard URL)
+npx supabase link --project-ref YOUR_PROJECT_ID
+
+# Push migrations
+npm run db:push
+```
+
+**Option B: Manual SQL**
+Go to **SQL Editor** in Supabase dashboard and run:
+- `supabase/migrations/20240101000000_initial_schema.sql`
+- `supabase/migrations/20240101000001_seed_grammar_topics.sql`
 
 ### 3. Configure Environment
 

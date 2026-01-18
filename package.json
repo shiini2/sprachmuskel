@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:push": "npx supabase db push",
+    "db:reset": "npx supabase db reset",
+    "db:migrate": "npx supabase migration up",
+    "db:status": "npx supabase db status"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
