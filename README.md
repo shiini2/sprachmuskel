@@ -1,5 +1,7 @@
 # Sprachmuskel - German Learning App
 
+**Live Demo:** https://sprachmuskel.vercel.app
+
 A web app designed to take you from A1.2 to B1 German by focusing on **active production** rather than passive recognition. Built with Next.js, Supabase, and AI.
 
 ## Features
@@ -25,7 +27,7 @@ A web app designed to take you from A1.2 to B1 German by focusing on **active pr
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sprachmuskel.git
+git clone https://github.com/shiini2/sprachmuskel.git
 cd sprachmuskel
 npm install
 ```
@@ -119,28 +121,17 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Deploy to Vercel (Free)
 
-### 1. Push to GitHub
-
-```bash
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/sprachmuskel.git
-git push -u origin main
-```
-
-### 2. Deploy on Vercel
-
-1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
-2. Click **"New Project"**
-3. Import your `sprachmuskel` repository
-4. Add environment variables:
+1. Fork this repo on GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in with GitHub
+3. Click **"New Project"**
+4. Import your forked `sprachmuskel` repository
+5. Add environment variables:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `AI_PROVIDER` (set to `groq`)
    - `GROQ_API_KEY`
    - `GROQ_MODEL` (set to `llama-3.1-8b-instant`)
-5. Click **Deploy**
+6. Click **Deploy**
 
 Your app will be live at `https://your-project.vercel.app`
 
